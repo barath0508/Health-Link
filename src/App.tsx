@@ -8,6 +8,7 @@ import Assistance from './components/assistance/Assistance';
 import Medicines from './components/medicines/Medicines';
 import HealthRecords from './components/health/HealthRecords';
 import Doctors from './components/doctors/Doctors';
+import AIAssistant from './components/ai/AIAssistant';
 import Emergency from './components/emergency/Emergency';
 
 const AppContent: React.FC = () => {
@@ -40,6 +41,8 @@ const AppContent: React.FC = () => {
         return <HealthRecords />;
       case 'doctors':
         return <Doctors />;
+      case 'ai':
+        return <AIAssistant />;
       case 'emergency':
         return <Emergency />;
       default:
