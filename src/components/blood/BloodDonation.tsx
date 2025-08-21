@@ -364,9 +364,23 @@ const BloodDonation: React.FC = () => {
                   </div>
                 )}
 
-                <div className="flex justify-end">
-                  <button className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
-                    Contact Requester
+                <div className="flex justify-end space-x-3">
+                  <button 
+                    onClick={() => window.open(`tel:${request.contact_phone}`, '_self')}
+                    className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                  >
+                    <Phone className="h-4 w-4" />
+                    <span>Call Now</span>
+                  </button>
+                  <button 
+                    onClick={() => {
+                      const message = `Hi, I saw your blood request for ${request.patient_name} (${request.blood_group}). I would like to help.`;
+                      window.open(`sms:${request.contact_phone}?body=${encodeURIComponent(message)}`, '_self');
+                    }}
+                    className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    <Mail className="h-4 w-4" />
+                    <span>SMS</span>
                   </button>
                 </div>
               </div>
@@ -452,9 +466,25 @@ const BloodDonation: React.FC = () => {
                   </div>
                 </div>
 
-                <button className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
-                  Contact Donor
-                </button>
+                <div className="flex space-x-2">
+                  <button 
+                    onClick={() => window.open(`tel:${donor.profiles?.phone}`, '_self')}
+                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                  >
+                    <Phone className="h-4 w-4" />
+                    <span>Call</span>
+                  </button>
+                  <button 
+                    onClick={() => {
+                      const message = `Hi, I need ${donor.blood_group} blood. Can you help?`;
+                      window.open(`sms:${donor.profiles?.phone}?body=${encodeURIComponent(message)}`, '_self');
+                    }}
+                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    <Mail className="h-4 w-4" />
+                    <span>SMS</span>
+                  </button>
+                </div>
               </div>
             ))}
 
