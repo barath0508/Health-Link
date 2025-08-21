@@ -10,7 +10,8 @@ import {
   Navigation,
   Search,
   Star,
-  ExternalLink
+  ExternalLink,
+  X
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
@@ -34,6 +35,7 @@ const Emergency: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [selectedContact, setSelectedContact] = useState<EmergencyContact | null>(null);
 
   const categories = [
     { value: 'hospital', label: 'Hospitals', icon: Heart, color: 'bg-red-100 text-red-700', urgency: 'critical' },
@@ -129,6 +131,10 @@ const Emergency: React.FC = () => {
       const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address + ', ' + contact.city)}`;
       window.open(url, '_blank');
     }
+  };
+
+  const handleShowDetails = (contact: EmergencyContact) => {
+    setSelectedContact(contact);
   };
 
   if (loading) {
@@ -317,7 +323,10 @@ const Emergency: React.FC = () => {
                   <Navigation className="h-4 w-4" />
                   <span>Directions</span>
                 </button>
-                <button className="flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                <button 
+                  onClick={() => handleShowDetails(contact)}
+                  className="flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                >
                   <ExternalLink className="h-4 w-4" />
                   <span>Details</span>
                 </button>
@@ -340,6 +349,87 @@ const Emergency: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Contact Details Modal */}
+      {selectedContact && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Contact Details</h2>
+                <button
+                  onClick={() => setSelectedContact(null)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{selectedContact.name}</h3>
+                  <p className="text-gray-600 capitalize">{selectedContact.category.replace('_', ' ')} Service</p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="font-medium text-gray-700 mb-2">Contact Information</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center space-x-2">
+                        <Phone className="h-4 w-4 text-gray-500" />
+                        <span>{selectedContact.phone_number}</span>
+                      </div>
+                      {selectedContact.address && (
+                        <div className="flex items-start space-x-2">
+                          <MapPin className="h-4 w-4 text-gray-500 mt-0.5" />
+                          <span>{selectedContact.address}, {selectedContact.city}, {selectedContact.state}</span>
+                        </div>
+                      )}
+                      <div className="flex items-center space-x-2">
+                        <Clock className="h-4 w-4 text-gray-500" />
+                        <span>{selectedContact.is_24x7 ? '24/7 Available' : 'Limited Hours'}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {selectedContact.services && selectedContact.services.length > 0 && (
+                    <div>
+                      <h4 className="font-medium text-gray-700 mb-2">Services Offered</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedContact.services.map((service) => (
+                          <span
+                            key={service}
+                            className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs"
+                          >
+                            {service}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="flex space-x-3 pt-4">
+                  <button
+                    onClick={() => handleCall(selectedContact.phone_number)}
+                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                  >
+                    <Phone className="h-4 w-4" />
+                    <span>Call Now</span>
+                  </button>
+                  <button
+                    onClick={() => handleGetDirections(selectedContact)}
+                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+                  >
+                    <Navigation className="h-4 w-4" />
+                    <span>Get Directions</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Emergency Tips */}
       <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
