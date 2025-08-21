@@ -104,6 +104,24 @@ const Doctors: React.FC = () => {
     alert('Appointment booking feature coming soon!');
   };
 
+  const handleCall = (phone: string | null) => {
+    if (phone) {
+      window.open(`tel:${phone}`, '_self');
+    } else {
+      alert('Phone number not available for this doctor.');
+    }
+  };
+
+  const handleChat = (doctorName: string, phone: string | null) => {
+    if (phone) {
+      const message = `Hi Dr. ${doctorName}, I would like to consult with you. Can we schedule an appointment?`;
+      const whatsappUrl = `https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+    } else {
+      alert('Contact information not available for this doctor.');
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -380,15 +398,24 @@ const Doctors: React.FC = () => {
                   <Calendar className="h-4 w-4" />
                   <span>Book Appointment</span>
                 </button>
-                <button className="flex items-center justify-center space-x-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors">
+                <button 
+                  onClick={() => alert('Video consultation feature coming soon!')}
+                  className="flex items-center justify-center space-x-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+                >
                   <Video className="h-4 w-4" />
                   <span>Video Call</span>
                 </button>
-                <button className="flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                <button 
+                  onClick={() => handleChat(doctor.profiles?.full_name || 'Doctor', doctor.profiles?.phone)}
+                  className="flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                >
                   <MessageCircle className="h-4 w-4" />
                   <span>Chat</span>
                 </button>
-                <button className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                <button 
+                  onClick={() => handleCall(doctor.profiles?.phone)}
+                  className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
                   <Phone className="h-4 w-4" />
                   <span>Call</span>
                 </button>
