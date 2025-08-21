@@ -36,13 +36,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange }) => 
     { id: 'emergency', label: 'Emergency', icon: Phone, color: 'text-red-600' },
   ];
 
-  const languages = [
-    { code: 'en', name: 'English' },
-    { code: 'hi', name: 'हिन्दी' },
-    { code: 'ta', name: 'தமிழ்' },
-    { code: 'te', name: 'తెలుగు' },
-    { code: 'bn', name: 'বাংলা' },
-  ];
+ 
 
   const handleSignOut = () => {
     signOut();
@@ -98,13 +92,9 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange }) => 
                   onChange={(e) => setLanguage(e.target.value)}
                   className="appearance-none bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 pr-8 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  {languages.map((lang) => (
-                    <option key={lang.code} value={lang.code}>
-                      {lang.name}
-                    </option>
-                  ))}
+                  
                 </select>
-                <Globe className="absolute right-2 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
+               
               </div>
 
               {/* Profile Menu */}
