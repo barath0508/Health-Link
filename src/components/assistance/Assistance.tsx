@@ -346,15 +346,59 @@ const Assistance: React.FC = () => {
 
                     {/* Actions */}
                     <div className="flex space-x-3">
-                      <button className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                      <button 
+                        onClick={() => {
+                          // In a real app, this would open a payment gateway
+                          alert(`Donation feature coming soon! You can help ${request.patient_name} by contacting the requester directly.`);
+                        }}
+                        className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                      >
                         <CreditCard className="h-4 w-4" />
                         <span>Donate Now</span>
                       </button>
-                      <button className="flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                      <button 
+                        onClick={() => {
+                          const shareText = `Help ${request.patient_name} fight ${request.medical_condition}. Target: ₹${request.target_amount.toLocaleString()}. Every contribution counts! #HealthLink #MedicalAssistance`;
+                          const shareUrl = window.location.href;
+                          
+                          if (navigator.share) {
+                            navigator.share({
+                              title: request.title,
+                              text: shareText,
+                              url: shareUrl
+                            });
+                          } else {
+                            // Fallback for browsers that don't support Web Share API
+                            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`;
+                            window.open(whatsappUrl, '_blank');
+                          }
+                        }}
+                        className="flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                      >
                         <Heart className="h-4 w-4" />
                         <span>Share</span>
                       </button>
-                      <button className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                      <button 
+                        onClick={() => {
+                          const details = `
+Patient: ${request.patient_name}${request.patient_age ? ` (${request.patient_age} years)` : ''}
+Condition: ${request.medical_condition}
+Hospital: ${request.hospital_name || 'Not specified'}
+Target Amount: ₹${request.target_amount.toLocaleString()}
+Raised: ₹${request.raised_amount.toLocaleString()}
+Remaining: ₹${(request.target_amount - request.raised_amount).toLocaleString()}
+${request.deadline_date ? `Deadline: ${new Date(request.deadline_date).toLocaleDateString()}` : ''}
+
+Description:
+${request.description}
+
+${request.treatment_details ? `Treatment Details:
+${request.treatment_details}` : ''}`;
+                          
+                          alert(details);
+                        }}
+                        className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                      >
                         <FileText className="h-4 w-4" />
                         <span>Details</span>
                       </button>
