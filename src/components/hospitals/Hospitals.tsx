@@ -354,13 +354,30 @@ const Hospitals: React.FC = () => {
 
               {/* Actions */}
               <div className="flex space-x-3">
-                <button className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-                  Contact Hospital
+                <button 
+                  onClick={() => {
+                    if (hospital.profiles?.phone) {
+                      window.open(`tel:${hospital.profiles.phone}`, '_self');
+                    } else {
+                      alert('Phone number not available for this hospital.');
+                    }
+                  }}
+                  className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  <Phone className="h-4 w-4" />
+                  <span>Contact Hospital</span>
                 </button>
                 <button className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
                   Join Community
                 </button>
-                <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                <button 
+                  onClick={() => {
+                    const address = hospital.profiles?.address || hospital.hospital_name;
+                    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address + ', Chennai')}`;
+                    window.open(url, '_blank');
+                  }}
+                  className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
                   Get Directions
                 </button>
               </div>
