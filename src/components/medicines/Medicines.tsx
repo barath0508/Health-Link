@@ -328,7 +328,7 @@ const Medicines: React.FC = () => {
             <Calendar className="h-5 w-5 text-purple-600" />
             <h2 className="text-lg font-semibold text-gray-900">Today's Schedule</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {todaysSchedule.map((item) => (
               <div key={item.id} className="bg-gray-50 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-2">

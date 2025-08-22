@@ -204,7 +204,7 @@ const HealthCard: React.FC = () => {
 
         {/* Card Body */}
         <div className="p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             {/* User Information */}
             <div className="space-y-6">
               <div className="flex items-center space-x-4">
@@ -217,7 +217,7 @@ const HealthCard: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-red-50 p-4 rounded-lg">
                   <h4 className="font-medium text-red-900 mb-1">Blood Group</h4>
                   <p className="text-2xl font-bold text-red-600">O+</p>
@@ -293,7 +293,7 @@ const HealthCard: React.FC = () => {
             </div>
 
             {/* QR Code */}
-            <div className="flex flex-col items-center justify-center space-y-4">
+            <div className="flex flex-col items-center justify-center space-y-4 order-first xl:order-last">
               <div className="bg-white p-4 rounded-xl shadow-lg border-2 border-gray-200">
                 {qrCodeUrl ? (
                   <img src={qrCodeUrl} alt="Health Card QR Code" className="w-48 h-48" />

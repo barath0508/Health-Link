@@ -73,21 +73,21 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange }) => 
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex space-x-1">
+            <nav className="hidden lg:flex space-x-1 overflow-x-auto max-w-2xl">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 return (
                   <button
                     key={item.id}
                     onClick={() => onTabChange(item.id)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    className={`flex items-center space-x-1 px-2 py-2 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap ${
                       activeTab === item.id
                         ? 'bg-blue-50 text-blue-700 shadow-sm'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                     }`}
                   >
                     <Icon className={`h-4 w-4 ${activeTab === item.id ? item.color : ''}`} />
-                    <span className="hidden xl:inline">{item.label}</span>
+                    <span className="hidden xl:inline text-xs">{item.label}</span>
                   </button>
                 );
               })}

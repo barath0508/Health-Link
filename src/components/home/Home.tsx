@@ -145,7 +145,7 @@ Help is on the way!`);
           {!sosActive ? (
             <button
               onClick={handleSOSClick}
-              className="relative w-48 h-48 mx-auto bg-gradient-to-br from-red-500 to-red-600 rounded-full shadow-2xl hover:from-red-600 hover:to-red-700 transition-all duration-300 transform hover:scale-105 active:scale-95"
+              className="relative w-40 h-40 sm:w-48 sm:h-48 mx-auto bg-gradient-to-br from-red-500 to-red-600 rounded-full shadow-2xl hover:from-red-600 hover:to-red-700 transition-all duration-300 transform hover:scale-105 active:scale-95"
             >
               <div className="absolute inset-4 bg-white/20 rounded-full animate-pulse"></div>
               <div className="absolute inset-8 bg-white/30 rounded-full animate-ping"></div>
