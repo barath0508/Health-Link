@@ -14,7 +14,8 @@ import {
   Globe,
   Brain,
   Calendar,
-  Apple
+  Apple,
+  Home
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -30,6 +31,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange }) => 
   const [language, setLanguage] = useState('en');
 
   const navItems = [
+    { id: 'home', label: 'Home', icon: Home, color: 'text-blue-500' },
     { id: 'blood', label: 'Blood Donation', icon: Heart, color: 'text-red-500' },
     { id: 'hospitals', label: 'Hospitals', icon: Building2, color: 'text-blue-500' },
     { id: 'assistance', label: 'Assistance', icon: HandHeart, color: 'text-green-500' },

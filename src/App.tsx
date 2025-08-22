@@ -12,10 +12,11 @@ import AIAssistant from './components/ai/AIAssistant';
 import Emergency from './components/emergency/Emergency';
 import Campaigns from './components/campaigns/Campaigns';
 import NutritionChecker from './components/nutrition/NutritionChecker';
+import Home from './components/home/Home';
 
 const AppContent: React.FC = () => {
   const { user, loading } = useAuth();
-  const [activeTab, setActiveTab] = useState('blood');
+  const [activeTab, setActiveTab] = useState('home');
 
   if (loading) {
     return (
@@ -31,6 +32,8 @@ const AppContent: React.FC = () => {
 
   const renderActiveComponent = () => {
     switch (activeTab) {
+      case 'home':
+        return <Home />;
       case 'blood':
         return <BloodDonation />;
       case 'hospitals':
@@ -52,7 +55,7 @@ const AppContent: React.FC = () => {
       case 'nutrition':
         return <NutritionChecker />;
       default:
-        return <BloodDonation />;
+        return <Home />;
     }
   };
 
