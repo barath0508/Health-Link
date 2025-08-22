@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, MapPin, Phone, Mail, Plus, Search, Filter, Clock, Award } from 'lucide-react';
+import { Heart, MapPin, Phone, Mail, Plus, Search, Filter, Clock, Award, Droplets, Zap, Shield, Target, Database, Cpu } from 'lucide-react';
 import { supabase, BloodDonor, BloodRequest } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -37,10 +37,10 @@ const BloodDonation: React.FC = () => {
 
   const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   const urgencyLevels = [
-    { value: 'low', label: 'Low', color: 'bg-green-100 text-green-800' },
-    { value: 'medium', label: 'Medium', color: 'bg-yellow-100 text-yellow-800' },
-    { value: 'high', label: 'High', color: 'bg-orange-100 text-orange-800' },
-    { value: 'critical', label: 'Critical', color: 'bg-red-100 text-red-800' },
+    { value: 'low', label: 'LOW', color: 'bg-green-500/20 border-green-500 text-green-400' },
+    { value: 'medium', label: 'MEDIUM', color: 'bg-yellow-500/20 border-yellow-500 text-yellow-400' },
+    { value: 'high', label: 'HIGH', color: 'bg-orange-500/20 border-orange-500 text-orange-400' },
+    { value: 'critical', label: 'CRITICAL', color: 'bg-red-500/20 border-red-500 text-red-400' },
   ];
 
   useEffect(() => {
@@ -175,73 +175,116 @@ const BloodDonation: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+        <div className="w-12 h-12 border-2 border-red-500/30 border-t-red-500 rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-red-500 to-pink-500 rounded-2xl p-8 text-white">
-        <div className="flex items-center space-x-4 mb-4">
-          <Heart className="h-12 w-12" />
-          <div>
-            <h1 className="text-3xl font-bold">Blood Donation Network</h1>
-            <p className="text-red-100">Connecting life savers with those in need</p>
+    <div className="space-y-8 relative">
+      {/* Cyberpunk Header */}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 rounded-3xl border border-red-500/30"></div>
+        <div className="absolute inset-0 opacity-20" style={{
+          backgroundImage: `
+            linear-gradient(rgba(255, 0, 0, 0.3) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 0, 0, 0.3) 1px, transparent 1px)
+          `,
+          backgroundSize: '25px 25px'
+        }}></div>
+        <div className="absolute top-4 right-4 w-32 h-32 bg-red-500/20 rounded-full blur-2xl animate-pulse"></div>
+        <div className="absolute bottom-4 left-4 w-24 h-24 bg-pink-500/20 rounded-full blur-xl animate-pulse delay-1000"></div>
+        
+        <div className="relative px-8 py-12 text-white">
+          <div className="flex items-center space-x-4 mb-6">
+            <div className="relative">
+              <div className="w-16 h-16 bg-gray-800 border-2 border-red-400 rounded-2xl flex items-center justify-center shadow-2xl shadow-red-500/50">
+                <Droplets className="h-8 w-8 text-red-400" />
+              </div>
+              <div className="absolute -top-2 -right-2 w-6 h-6 bg-pink-400 rounded-full flex items-center justify-center animate-pulse">
+                <Heart className="h-3 w-3 text-gray-900" />
+              </div>
+            </div>
+            <div>
+              <h1 className="text-4xl font-black mb-2 bg-gradient-to-r from-red-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
+                BLOOD NET
+              </h1>
+              <p className="text-red-300 text-lg font-bold tracking-wider">Life Support Network System</p>
+            </div>
           </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-          <div className="bg-white/20 rounded-lg p-4">
-            <div className="text-2xl font-bold">{bloodRequests.length}</div>
-            <div className="text-red-100">Active Requests</div>
-          </div>
-          <div className="bg-white/20 rounded-lg p-4">
-            <div className="text-2xl font-bold">{bloodDonors.length}</div>
-            <div className="text-red-100">Available Donors</div>
-          </div>
-          <div className="bg-white/20 rounded-lg p-4">
-            <div className="text-2xl font-bold">500+</div>
-            <div className="text-red-100">Lives Saved</div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+            <div className="bg-gray-800/40 border border-red-500/30 rounded-2xl p-4">
+              <div className="flex items-center space-x-3">
+                <Target className="h-6 w-6 text-red-400 animate-pulse" />
+                <div>
+                  <p className="text-2xl font-black text-red-400">{bloodRequests.length}</p>
+                  <p className="text-sm text-gray-300 font-bold">ACTIVE REQUESTS</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-800/40 border border-green-500/30 rounded-2xl p-4">
+              <div className="flex items-center space-x-3">
+                <Shield className="h-6 w-6 text-green-400 animate-pulse" />
+                <div>
+                  <p className="text-2xl font-black text-green-400">{bloodDonors.length}</p>
+                  <p className="text-sm text-gray-300 font-bold">ACTIVE DONORS</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-800/40 border border-cyan-500/30 rounded-2xl p-4">
+              <div className="flex items-center space-x-3">
+                <Zap className="h-6 w-6 text-cyan-400 animate-pulse" />
+                <div>
+                  <p className="text-2xl font-black text-cyan-400">500+</p>
+                  <p className="text-sm text-gray-300 font-bold">LIVES SAVED</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Navigation Tabs */}
-      <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+      {/* Cyberpunk Navigation */}
+      <div className="flex space-x-2 bg-gray-800/60 border border-gray-700 rounded-2xl p-2 shadow-2xl">
         {[
-          { id: 'requests', label: 'Blood Requests' },
-          { id: 'donors', label: 'Find Donors' },
-          { id: 'register', label: 'Register as Donor' },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveView(tab.id as any)}
-            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-              activeView === tab.id
-                ? 'bg-white text-red-600 shadow-sm'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
+          { id: 'requests', label: 'BLOOD REQUESTS', icon: Target },
+          { id: 'donors', label: 'DONOR NETWORK', icon: Shield },
+          { id: 'register', label: 'JOIN NETWORK', icon: Plus },
+        ].map((tab) => {
+          const Icon = tab.icon;
+          const isActive = activeView === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveView(tab.id as any)}
+              className={`flex-1 flex items-center justify-center space-x-3 py-4 px-6 rounded-xl font-black transition-all duration-300 transform hover:scale-105 border ${
+                isActive
+                  ? 'bg-gradient-to-r from-red-500 to-pink-500 text-gray-900 shadow-xl shadow-red-500/25 border-red-400'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-700/80 border-gray-600 hover:border-gray-500'
+              }`}
+            >
+              <Icon className="h-5 w-5" />
+              <span className="tracking-wider">{tab.label}</span>
+            </button>
+          );
+        })}
       </div>
 
-      {/* Search and Filters */}
+      {/* Search Interface */}
       {(activeView === 'requests' || activeView === 'donors') && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-gray-800/60 border border-cyan-500/30 rounded-3xl shadow-2xl shadow-cyan-500/10 p-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Blood Group
+              <label className="block text-sm font-black text-cyan-400 mb-2 tracking-wider">
+                BLOOD TYPE
               </label>
               <select
                 value={searchFilters.bloodGroup}
                 onChange={(e) => setSearchFilters(prev => ({ ...prev, bloodGroup: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-3 py-2 bg-gray-900/80 border-2 border-gray-700 rounded-xl text-cyan-400 focus:outline-none focus:ring-4 focus:ring-cyan-500/25 focus:border-cyan-500 font-bold"
               >
-                <option value="">All Blood Groups</option>
+                <option value="">ALL TYPES</option>
                 {bloodGroups.map((group) => (
                   <option key={group} value={group}>
                     {group}
@@ -252,15 +295,15 @@ const BloodDonation: React.FC = () => {
 
             {activeView === 'requests' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Urgency Level
+                <label className="block text-sm font-black text-red-400 mb-2 tracking-wider">
+                  THREAT LEVEL
                 </label>
                 <select
                   value={searchFilters.urgency}
                   onChange={(e) => setSearchFilters(prev => ({ ...prev, urgency: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="w-full px-3 py-2 bg-gray-900/80 border-2 border-gray-700 rounded-xl text-red-400 focus:outline-none focus:ring-4 focus:ring-red-500/25 focus:border-red-500 font-bold"
                 >
-                  <option value="">All Urgencies</option>
+                  <option value="">ALL LEVELS</option>
                   {urgencyLevels.map((level) => (
                     <option key={level.value} value={level.value}>
                       {level.label}
@@ -271,24 +314,24 @@ const BloodDonation: React.FC = () => {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Location
+              <label className="block text-sm font-black text-purple-400 mb-2 tracking-wider">
+                LOCATION
               </label>
               <input
                 type="text"
                 value={searchFilters.location}
                 onChange={(e) => setSearchFilters(prev => ({ ...prev, location: e.target.value }))}
-                placeholder="Enter city or area"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                placeholder="Enter sector..."
+                className="w-full px-3 py-2 bg-gray-900/80 border-2 border-gray-700 rounded-xl text-purple-400 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-purple-500/25 focus:border-purple-500 font-bold"
               />
             </div>
 
             <div className="flex items-end">
               <button
                 onClick={() => setSearchFilters({ bloodGroup: '', urgency: '', location: '' })}
-                className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                className="w-full px-4 py-2 bg-gray-700 border-2 border-gray-600 text-gray-300 rounded-xl hover:bg-gray-600 hover:text-white transition-all duration-300 font-bold tracking-wider"
               >
-                Clear Filters
+                CLEAR FILTERS
               </button>
             </div>
           </div>
@@ -297,105 +340,105 @@ const BloodDonation: React.FC = () => {
 
       {/* Blood Requests View */}
       {activeView === 'requests' && (
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-gray-900">Active Blood Requests</h2>
+            <h2 className="text-2xl font-black text-white">ACTIVE BLOOD REQUESTS</h2>
             <button
               onClick={() => setActiveView('register')}
-              className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+              className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-red-500 to-pink-500 text-gray-900 rounded-xl hover:shadow-xl hover:shadow-red-500/25 transition-all duration-300 font-black border-2 border-red-400 transform hover:scale-105"
             >
-              <Plus className="h-4 w-4" />
-              <span>New Request</span>
+              <Plus className="h-5 w-5" />
+              <span>NEW REQUEST</span>
             </button>
           </div>
 
           <div className="grid gap-6">
             {filteredRequests.map((request) => (
-              <div key={request.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <div className="flex items-start justify-between mb-4">
+              <div key={request.id} className="bg-gray-800/60 border border-red-500/30 rounded-3xl shadow-2xl shadow-red-500/10 p-6">
+                <div className="flex items-start justify-between mb-6">
                   <div className="flex items-center space-x-4">
-                    <div className="bg-red-100 p-3 rounded-full">
-                      <Heart className="h-6 w-6 text-red-600" />
+                    <div className="w-16 h-16 bg-red-500/20 border-2 border-red-500 rounded-2xl flex items-center justify-center">
+                      <Heart className="h-8 w-8 text-red-400" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-xl font-black text-white">
                         {request.patient_name}
                       </h3>
-                      <p className="text-gray-600">
-                        Needs {request.units_needed} unit(s) of {request.blood_group} blood
+                      <p className="text-gray-400 font-bold">
+                        REQUIRES {request.units_needed} UNIT(S) OF {request.blood_group} BLOOD
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                  <div className="flex items-center space-x-4">
+                    <span className={`px-4 py-2 rounded-xl text-sm font-black border-2 ${
                       urgencyLevels.find(u => u.value === request.urgency_level)?.color
                     }`}>
                       {urgencyLevels.find(u => u.value === request.urgency_level)?.label}
                     </span>
-                    <span className="text-xl font-bold text-red-600">
+                    <span className="text-3xl font-black text-red-400 bg-gray-900/60 px-4 py-2 rounded-xl border-2 border-red-500/50">
                       {request.blood_group}
                     </span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div className="flex items-center space-x-2 text-gray-600">
-                    <MapPin className="h-4 w-4" />
-                    <span className="text-sm">{request.hospital_name}</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  <div className="flex items-center space-x-3 text-gray-300">
+                    <MapPin className="h-5 w-5 text-cyan-400" />
+                    <span className="font-bold">{request.hospital_name}</span>
                   </div>
-                  <div className="flex items-center space-x-2 text-gray-600">
-                    <Clock className="h-4 w-4" />
-                    <span className="text-sm">
-                      Required by: {new Date(request.required_by).toLocaleDateString()}
+                  <div className="flex items-center space-x-3 text-gray-300">
+                    <Clock className="h-5 w-5 text-yellow-400" />
+                    <span className="font-bold">
+                      REQUIRED BY: {new Date(request.required_by).toLocaleDateString()}
                     </span>
                   </div>
-                  <div className="flex items-center space-x-2 text-gray-600">
-                    <Phone className="h-4 w-4" />
-                    <span className="text-sm">{request.contact_phone}</span>
+                  <div className="flex items-center space-x-3 text-gray-300">
+                    <Phone className="h-5 w-5 text-green-400" />
+                    <span className="font-bold">{request.contact_phone}</span>
                   </div>
-                  <div className="text-sm text-gray-600">
-                    Contact: {request.contact_person}
+                  <div className="text-gray-300 font-bold">
+                    CONTACT: {request.contact_person}
                   </div>
                 </div>
 
                 {request.additional_notes && (
-                  <div className="bg-gray-50 rounded-lg p-3 mb-4">
-                    <p className="text-sm text-gray-700">{request.additional_notes}</p>
+                  <div className="bg-gray-900/60 border border-gray-700 rounded-2xl p-4 mb-6">
+                    <p className="text-gray-300 font-medium">{request.additional_notes}</p>
                   </div>
                 )}
 
-                <div className="flex justify-end space-x-3">
+                <div className="flex justify-end space-x-4">
                   <button 
                     onClick={() => window.open(`tel:${request.contact_phone}`, '_self')}
-                    className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                    className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-gray-900 rounded-xl hover:shadow-xl hover:shadow-green-500/25 transition-all duration-300 font-black border-2 border-green-400 transform hover:scale-105"
                   >
-                    <Phone className="h-4 w-4" />
-                    <span>Call Now</span>
+                    <Phone className="h-5 w-5" />
+                    <span>CALL NOW</span>
                   </button>
                   <button 
                     onClick={() => {
                       const message = `Hi, I saw your blood request for ${request.patient_name} (${request.blood_group}). I would like to help.`;
                       window.open(`sms:${request.contact_phone}?body=${encodeURIComponent(message)}`, '_self');
                     }}
-                    className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                    className="flex items-center space-x-2 px-6 py-3 bg-gray-700 border-2 border-gray-600 text-gray-300 rounded-xl hover:bg-gray-600 hover:text-white transition-all duration-300 font-black transform hover:scale-105"
                   >
-                    <Mail className="h-4 w-4" />
-                    <span>SMS</span>
+                    <Mail className="h-5 w-5" />
+                    <span>MESSAGE</span>
                   </button>
                 </div>
               </div>
             ))}
 
             {filteredRequests.length === 0 && (
-              <div className="text-center py-12">
-                <Heart className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  No blood requests found
+              <div className="text-center py-12 bg-gray-800/40 border border-gray-700 rounded-3xl">
+                <Heart className="h-16 w-16 text-gray-600 mx-auto mb-4" />
+                <h3 className="text-lg font-black text-white mb-2">
+                  NO BLOOD REQUESTS FOUND
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-400 font-bold">
                   {searchFilters.bloodGroup || searchFilters.urgency || searchFilters.location
-                    ? 'Try adjusting your filters to see more results.'
-                    : 'Be the first to register as a donor and help save lives.'}
+                    ? 'ADJUST FILTERS TO SEE MORE RESULTS'
+                    : 'BE THE FIRST TO JOIN THE NETWORK'}
                 </p>
               </div>
             )}
@@ -405,99 +448,99 @@ const BloodDonation: React.FC = () => {
 
       {/* Blood Donors View */}
       {activeView === 'donors' && (
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-gray-900">Available Blood Donors</h2>
+            <h2 className="text-2xl font-black text-white">DONOR NETWORK</h2>
             <button
               onClick={() => setActiveView('register')}
-              className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+              className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-gray-900 rounded-xl hover:shadow-xl hover:shadow-green-500/25 transition-all duration-300 font-black border-2 border-green-400 transform hover:scale-105"
             >
-              <Plus className="h-4 w-4" />
-              <span>Become a Donor</span>
+              <Plus className="h-5 w-5" />
+              <span>JOIN NETWORK</span>
             </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredDonors.map((donor) => (
-              <div key={donor.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <div className="flex items-center justify-between mb-4">
+              <div key={donor.id} className="bg-gray-800/60 border border-green-500/30 rounded-3xl shadow-2xl shadow-green-500/10 p-6">
+                <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center space-x-3">
-                    <div className="bg-red-100 p-2 rounded-full">
-                      <Heart className="h-5 w-5 text-red-600" />
+                    <div className="w-12 h-12 bg-green-500/20 border-2 border-green-500 rounded-2xl flex items-center justify-center">
+                      <Heart className="h-6 w-6 text-green-400" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">
+                      <h3 className="font-black text-white">
                         {donor.profiles?.full_name}
                       </h3>
-                      <p className="text-sm text-gray-600">{donor.profiles?.city}</p>
+                      <p className="text-sm text-gray-400 font-bold">{donor.profiles?.city}</p>
                     </div>
                   </div>
-                  <span className="text-2xl font-bold text-red-600">
+                  <span className="text-2xl font-black text-green-400 bg-gray-900/60 px-3 py-1 rounded-xl border-2 border-green-500/50">
                     {donor.blood_group}
                   </span>
                 </div>
 
-                <div className="space-y-3 mb-4">
-                  <div className="flex items-center space-x-2 text-gray-600">
-                    <Award className="h-4 w-4" />
-                    <span className="text-sm">
-                      {donor.donation_count} donation(s)
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center space-x-3 text-gray-300">
+                    <Award className="h-5 w-5 text-cyan-400" />
+                    <span className="font-bold">
+                      {donor.donation_count} DONATIONS
                     </span>
                   </div>
                   
                   {donor.last_donated_date && (
-                    <div className="flex items-center space-x-2 text-gray-600">
-                      <Clock className="h-4 w-4" />
-                      <span className="text-sm">
-                        Last donated: {new Date(donor.last_donated_date).toLocaleDateString()}
+                    <div className="flex items-center space-x-3 text-gray-300">
+                      <Clock className="h-5 w-5 text-yellow-400" />
+                      <span className="font-bold">
+                        LAST: {new Date(donor.last_donated_date).toLocaleDateString()}
                       </span>
                     </div>
                   )}
 
-                  <div className="flex items-center space-x-2 text-gray-600">
+                  <div className="flex items-center space-x-3 text-gray-300">
                     {donor.preferred_contact === 'phone' || donor.preferred_contact === 'both' ? (
-                      <Phone className="h-4 w-4" />
+                      <Phone className="h-5 w-5 text-purple-400" />
                     ) : (
-                      <Mail className="h-4 w-4" />
+                      <Mail className="h-5 w-5 text-purple-400" />
                     )}
-                    <span className="text-sm">
-                      Contact via {donor.preferred_contact}
+                    <span className="font-bold">
+                      CONTACT: {donor.preferred_contact.toUpperCase()}
                     </span>
                   </div>
                 </div>
 
-                <div className="flex space-x-2">
+                <div className="flex space-x-3">
                   <button 
                     onClick={() => window.open(`tel:${donor.profiles?.phone}`, '_self')}
-                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-gray-900 rounded-xl hover:shadow-xl hover:shadow-green-500/25 transition-all duration-300 font-black border-2 border-green-400 transform hover:scale-105"
                   >
                     <Phone className="h-4 w-4" />
-                    <span>Call</span>
+                    <span>CALL</span>
                   </button>
                   <button 
                     onClick={() => {
                       const message = `Hi, I need ${donor.blood_group} blood. Can you help?`;
                       window.open(`sms:${donor.profiles?.phone}?body=${encodeURIComponent(message)}`, '_self');
                     }}
-                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-3 bg-gray-700 border-2 border-gray-600 text-gray-300 rounded-xl hover:bg-gray-600 hover:text-white transition-all duration-300 font-black transform hover:scale-105"
                   >
                     <Mail className="h-4 w-4" />
-                    <span>SMS</span>
+                    <span>MSG</span>
                   </button>
                 </div>
               </div>
             ))}
 
             {filteredDonors.length === 0 && (
-              <div className="col-span-full text-center py-12">
-                <Heart className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  No donors found
+              <div className="col-span-full text-center py-12 bg-gray-800/40 border border-gray-700 rounded-3xl">
+                <Heart className="h-16 w-16 text-gray-600 mx-auto mb-4" />
+                <h3 className="text-lg font-black text-white mb-2">
+                  NO DONORS FOUND
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-400 font-bold">
                   {searchFilters.bloodGroup || searchFilters.location
-                    ? 'Try adjusting your filters to find more donors.'
-                    : 'Be the first to register as a donor in your area.'}
+                    ? 'ADJUST FILTERS TO FIND MORE DONORS'
+                    : 'BE THE FIRST TO JOIN THE NETWORK'}
                 </p>
               </div>
             )}
@@ -505,35 +548,35 @@ const BloodDonation: React.FC = () => {
         </div>
       )}
 
-      {/* Register as Donor View */}
+      {/* Register Interface */}
       {activeView === 'register' && (
         <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+          <div className="bg-gray-800/60 border border-green-500/30 rounded-3xl shadow-2xl shadow-green-500/10 p-8">
             <div className="text-center mb-8">
-              <div className="bg-red-100 p-4 rounded-full w-16 h-16 mx-auto mb-4">
-                <Heart className="h-8 w-8 text-red-600" />
+              <div className="w-20 h-20 bg-green-500/20 border-2 border-green-500 rounded-3xl mx-auto mb-6 flex items-center justify-center">
+                <Heart className="h-10 w-10 text-green-400" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                Become a Life Saver
+              <h2 className="text-3xl font-black text-white mb-4">
+                JOIN THE NETWORK
               </h2>
-              <p className="text-gray-600">
-                Register as a blood donor and help save lives in your community
+              <p className="text-gray-400 font-bold text-lg">
+                Register as a blood donor and become a life saver
               </p>
             </div>
 
             <form onSubmit={handleDonorRegistration} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Blood Group *
+                  <label className="block text-sm font-black text-red-400 mb-2 tracking-wider">
+                    BLOOD TYPE *
                   </label>
                   <select
                     value={donorForm.blood_group}
                     onChange={(e) => setDonorForm(prev => ({ ...prev, blood_group: e.target.value }))}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                    className="w-full px-4 py-3 bg-gray-900/80 border-2 border-gray-700 rounded-xl text-red-400 focus:outline-none focus:ring-4 focus:ring-red-500/25 focus:border-red-500 font-bold"
                   >
-                    <option value="">Select Blood Group</option>
+                    <option value="">SELECT TYPE</option>
                     {bloodGroups.map((group) => (
                       <option key={group} value={group}>
                         {group}
@@ -543,8 +586,8 @@ const BloodDonation: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Weight (kg) *
+                  <label className="block text-sm font-black text-cyan-400 mb-2 tracking-wider">
+                    WEIGHT (KG) *
                   </label>
                   <input
                     type="number"
@@ -552,72 +595,72 @@ const BloodDonation: React.FC = () => {
                     onChange={(e) => setDonorForm(prev => ({ ...prev, weight: e.target.value }))}
                     required
                     min="45"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="Enter your weight"
+                    className="w-full px-4 py-3 bg-gray-900/80 border-2 border-gray-700 rounded-xl text-cyan-400 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-cyan-500/25 focus:border-cyan-500 font-bold"
+                    placeholder="Enter weight"
                   />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Minimum weight requirement: 45 kg
+                  <p className="text-xs text-gray-500 mt-2 font-bold">
+                    MINIMUM: 45 KG
                   </p>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Preferred Contact Method
+                <label className="block text-sm font-black text-purple-400 mb-2 tracking-wider">
+                  CONTACT METHOD
                 </label>
                 <select
                   value={donorForm.preferred_contact}
                   onChange={(e) => setDonorForm(prev => ({ ...prev, preferred_contact: e.target.value as any }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-gray-900/80 border-2 border-gray-700 rounded-xl text-purple-400 focus:outline-none focus:ring-4 focus:ring-purple-500/25 focus:border-purple-500 font-bold"
                 >
-                  <option value="phone">Phone</option>
-                  <option value="email">Email</option>
-                  <option value="both">Both Phone & Email</option>
+                  <option value="phone">PHONE</option>
+                  <option value="email">EMAIL</option>
+                  <option value="both">BOTH</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Medical Conditions (if any)
+                <label className="block text-sm font-black text-yellow-400 mb-2 tracking-wider">
+                  MEDICAL CONDITIONS
                 </label>
                 <textarea
                   value={donorForm.medical_conditions}
                   onChange={(e) => setDonorForm(prev => ({ ...prev, medical_conditions: e.target.value }))}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  placeholder="Please mention any medical conditions that might affect blood donation"
+                  className="w-full px-4 py-3 bg-gray-900/80 border-2 border-gray-700 rounded-xl text-yellow-400 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-yellow-500/25 focus:border-yellow-500 font-bold resize-none"
+                  placeholder="List any medical conditions..."
                 />
               </div>
 
-              <div className="bg-blue-50 rounded-lg p-4">
-                <h4 className="font-medium text-blue-900 mb-2">
-                  Blood Donation Eligibility Guidelines
+              <div className="bg-gray-900/60 border border-blue-500/50 rounded-2xl p-6">
+                <h4 className="font-black text-blue-400 mb-4 tracking-wider">
+                  ELIGIBILITY REQUIREMENTS
                 </h4>
-                <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Age: 18-65 years</li>
-                  <li>• Weight: Minimum 45 kg</li>
-                  <li>• Hemoglobin: Minimum 12.5 g/dL</li>
-                  <li>• Must be free from infectious diseases</li>
-                  <li>• Minimum gap of 3 months between donations</li>
+                <ul className="text-sm text-blue-300 space-y-2 font-bold">
+                  <li>• AGE: 18-65 YEARS</li>
+                  <li>• WEIGHT: MINIMUM 45 KG</li>
+                  <li>• HEMOGLOBIN: MINIMUM 12.5 G/DL</li>
+                  <li>• NO INFECTIOUS DISEASES</li>
+                  <li>• 3 MONTH GAP BETWEEN DONATIONS</li>
                 </ul>
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
+                className="w-full py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-gray-900 rounded-2xl font-black text-lg hover:shadow-xl hover:shadow-green-500/25 transition-all duration-300 border-2 border-green-400 transform hover:scale-105 tracking-wider"
               >
-                Register as Blood Donor
+                JOIN BLOOD NETWORK
               </button>
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-500">
-                Already registered?{' '}
+              <p className="text-sm text-gray-500 font-bold">
+                ALREADY REGISTERED?{' '}
                 <button
                   onClick={() => setActiveView('donors')}
-                  className="text-red-600 hover:text-red-800 font-medium"
+                  className="text-green-400 hover:text-green-300 font-black"
                 >
-                  View donors list
+                  VIEW NETWORK
                 </button>
               </p>
             </div>

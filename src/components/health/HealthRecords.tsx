@@ -27,12 +27,12 @@ const HealthRecords: React.FC = () => {
   });
 
   const recordTypes = [
-    { value: 'symptom', label: 'Symptom', icon: Activity, color: 'bg-yellow-100 text-yellow-800' },
-    { value: 'diagnosis', label: 'Diagnosis', icon: FileText, color: 'bg-blue-100 text-blue-800' },
-    { value: 'surgery', label: 'Surgery', icon: Shield, color: 'bg-red-100 text-red-800' },
-    { value: 'prescription', label: 'Prescription', icon: Pill, color: 'bg-green-100 text-green-800' },
-    { value: 'lab_result', label: 'Lab Result', icon: Activity, color: 'bg-purple-100 text-purple-800' },
-    { value: 'vaccination', label: 'Vaccination', icon: Shield, color: 'bg-teal-100 text-teal-800' },
+    { value: 'symptom', label: 'Symptom', icon: Activity, color: 'bg-yellow-900/50 text-yellow-400 border-yellow-500/30' },
+    { value: 'diagnosis', label: 'Diagnosis', icon: FileText, color: 'bg-blue-900/50 text-blue-400 border-blue-500/30' },
+    { value: 'surgery', label: 'Surgery', icon: Shield, color: 'bg-red-900/50 text-red-400 border-red-500/30' },
+    { value: 'prescription', label: 'Prescription', icon: Pill, color: 'bg-green-900/50 text-green-400 border-green-500/30' },
+    { value: 'lab_result', label: 'Lab Result', icon: Activity, color: 'bg-purple-900/50 text-purple-400 border-purple-500/30' },
+    { value: 'vaccination', label: 'Vaccination', icon: Shield, color: 'bg-teal-900/50 text-teal-400 border-teal-500/30' },
   ];
 
   const commonTags = [
@@ -88,7 +88,7 @@ const HealthRecords: React.FC = () => {
 
       if (error) throw error;
 
-      alert('Health record added successfully!');
+      alert('Bio record uploaded to neural database!');
       setRecordForm({
         record_type: 'diagnosis',
         title: '',
@@ -103,12 +103,12 @@ const HealthRecords: React.FC = () => {
       fetchHealthRecords();
     } catch (error) {
       console.error('Error adding health record:', error);
-      alert('Error adding record. Please try again.');
+      alert('Upload failed. Retry neural connection.');
     }
   };
 
   const handleDeleteRecord = async (recordId: string) => {
-    if (!confirm('Are you sure you want to delete this health record?')) return;
+    if (!confirm('Delete this bio record from neural database?')) return;
 
     try {
       const { error } = await supabase
@@ -137,9 +137,8 @@ const HealthRecords: React.FC = () => {
       medications: records.filter(r => r.record_type === 'prescription'),
     };
 
-    // In a real app, this would generate a proper PDF
-    console.log('Health Summary:', summary);
-    alert('Health summary generated! (In a real app, this would download a PDF)');
+    console.log('Bio Summary:', summary);
+    alert('Bio summary generated! (Neural PDF export coming soon)');
   };
 
   const filteredRecords = records.filter((record) => {
@@ -157,7 +156,7 @@ const HealthRecords: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-400"></div>
       </div>
     );
   }
@@ -165,72 +164,87 @@ const HealthRecords: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl p-8 text-white">
-        <div className="flex items-center space-x-4 mb-4">
-          <FileText className="h-12 w-12" />
-          <div>
-            <h1 className="text-3xl font-bold">Health Records</h1>
-            <p className="text-indigo-100">Your complete digital health history</p>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-6">
-          <div className="bg-white/20 rounded-lg p-4">
-            <div className="text-2xl font-bold">{records.length}</div>
-            <div className="text-indigo-100">Total Records</div>
-          </div>
-          <div className="bg-white/20 rounded-lg p-4">
-            <div className="text-2xl font-bold">
-              {records.filter(r => r.record_type === 'prescription').length}
+      <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden">
+        <div 
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '30px 30px'
+          }}
+        />
+        <div className="relative z-10">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-6">
+            <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+              <FileText className="h-10 sm:h-12 w-10 sm:w-12" />
             </div>
-            <div className="text-indigo-100">Prescriptions</div>
-          </div>
-          <div className="bg-white/20 rounded-lg p-4">
-            <div className="text-2xl font-bold">
-              {records.filter(r => r.record_type === 'lab_result').length}
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-black tracking-wider">BIO RECORDS</h1>
+              <p className="text-indigo-100 font-bold tracking-wide">Your complete neural health archive</p>
             </div>
-            <div className="text-indigo-100">Lab Results</div>
           </div>
-          <div className="bg-white/20 rounded-lg p-4">
-            <div className="text-2xl font-bold">
-              {new Set(records.map(r => r.doctor_name).filter(Boolean)).size}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+            <div className="bg-white/20 rounded-lg p-3 sm:p-4 backdrop-blur-sm">
+              <div className="text-xl sm:text-2xl font-black">{records.length}</div>
+              <div className="text-indigo-100 text-xs sm:text-sm font-bold tracking-wider">TOTAL RECORDS</div>
             </div>
-            <div className="text-indigo-100">Doctors</div>
+            <div className="bg-white/20 rounded-lg p-3 sm:p-4 backdrop-blur-sm">
+              <div className="text-xl sm:text-2xl font-black">
+                {records.filter(r => r.record_type === 'prescription').length}
+              </div>
+              <div className="text-indigo-100 text-xs sm:text-sm font-bold tracking-wider">PRESCRIPTIONS</div>
+            </div>
+            <div className="bg-white/20 rounded-lg p-3 sm:p-4 backdrop-blur-sm">
+              <div className="text-xl sm:text-2xl font-black">
+                {records.filter(r => r.record_type === 'lab_result').length}
+              </div>
+              <div className="text-indigo-100 text-xs sm:text-sm font-bold tracking-wider">LAB RESULTS</div>
+            </div>
+            <div className="bg-white/20 rounded-lg p-3 sm:p-4 backdrop-blur-sm">
+              <div className="text-xl sm:text-2xl font-black">
+                {new Set(records.map(r => r.doctor_name).filter(Boolean)).size}
+              </div>
+              <div className="text-indigo-100 text-xs sm:text-sm font-bold tracking-wider">SPECIALISTS</div>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Navigation */}
       <div className="flex justify-between items-center">
-        <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+        <div className="flex space-x-1 bg-gray-800 rounded-lg p-1 border border-indigo-500/30">
           <button
             onClick={() => setActiveView('records')}
-            className={`py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+            className={`py-2 px-4 rounded-md text-sm font-black tracking-wider transition-all ${
               activeView === 'records'
-                ? 'bg-white text-indigo-600 shadow-sm'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-indigo-500 text-black shadow-lg shadow-indigo-500/25'
+                : 'text-indigo-400 hover:text-indigo-300'
             }`}
           >
-            My Records
+            MY RECORDS
           </button>
           <button
             onClick={() => setActiveView('add')}
-            className={`py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+            className={`py-2 px-4 rounded-md text-sm font-black tracking-wider transition-all ${
               activeView === 'add'
-                ? 'bg-white text-indigo-600 shadow-sm'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-indigo-500 text-black shadow-lg shadow-indigo-500/25'
+                : 'text-indigo-400 hover:text-indigo-300'
             }`}
           >
-            Add Record
+            ADD RECORD
           </button>
         </div>
 
         {activeView === 'records' && (
           <button
             onClick={generateHealthSummary}
-            className="flex items-center space-x-2 px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
+            className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg hover:from-indigo-400 hover:to-purple-400 transition-all font-black tracking-wider shadow-lg shadow-indigo-500/25 transform hover:scale-105"
           >
             <Download className="h-4 w-4" />
-            <span>Generate Summary</span>
+            <span className="hidden sm:inline">GENERATE SUMMARY</span>
+            <span className="sm:hidden">EXPORT</span>
           </button>
         )}
       </div>
@@ -239,17 +253,17 @@ const HealthRecords: React.FC = () => {
       {activeView === 'records' && (
         <div className="space-y-6">
           {/* Search and Filters */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="md:col-span-2">
+          <div className="bg-gray-800 rounded-xl shadow-lg border border-indigo-500/30 p-4 sm:p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="sm:col-span-2">
                 <div className="relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Search className="absolute left-3 top-3 h-4 w-4 text-indigo-400" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search records, symptoms, doctors..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    placeholder="Search records, symptoms, specialists..."
+                    className="w-full pl-10 pr-4 py-2 bg-gray-900 border border-indigo-500/50 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white placeholder-gray-400"
                   />
                 </div>
               </div>
@@ -258,7 +272,7 @@ const HealthRecords: React.FC = () => {
                 <select
                   value={filters.type}
                   onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-3 py-2 bg-gray-900 border border-indigo-500/50 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white"
                 >
                   <option value="">All Types</option>
                   {recordTypes.map((type) => (
@@ -274,8 +288,8 @@ const HealthRecords: React.FC = () => {
                   type="text"
                   value={filters.doctor}
                   onChange={(e) => setFilters(prev => ({ ...prev, doctor: e.target.value }))}
-                  placeholder="Filter by doctor"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  placeholder="Filter by specialist"
+                  className="w-full px-3 py-2 bg-gray-900 border border-indigo-500/50 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white placeholder-gray-400"
                 />
               </div>
             </div>
@@ -288,39 +302,39 @@ const HealthRecords: React.FC = () => {
               const Icon = recordType?.icon || FileText;
 
               return (
-                <div key={record.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="bg-indigo-100 p-3 rounded-xl">
-                        <Icon className="h-6 w-6 text-indigo-600" />
+                <div key={record.id} className="bg-gray-800 rounded-xl shadow-lg border border-indigo-500/30 p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row items-start justify-between mb-4 space-y-4 sm:space-y-0">
+                    <div className="flex items-start space-x-4">
+                      <div className="bg-indigo-500/20 p-3 rounded-xl border border-indigo-500/30">
+                        <Icon className="h-6 w-6 text-indigo-400" />
                       </div>
                       <div>
-                        <div className="flex items-center space-x-2 mb-1">
-                          <h3 className="text-lg font-semibold text-gray-900">
+                        <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-1">
+                          <h3 className="text-lg font-black text-white tracking-wider">
                             {record.title}
                           </h3>
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${recordType?.color}`}>
+                          <span className={`px-2 py-1 rounded-full text-xs font-black tracking-wider border ${recordType?.color}`}>
                             {recordType?.label}
                           </span>
                           {record.is_private && (
                             <Shield className="h-4 w-4 text-gray-400" title="Private" />
                           )}
                         </div>
-                        <div className="flex items-center space-x-4 text-sm text-gray-600">
+                        <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 text-sm text-gray-400">
                           <div className="flex items-center space-x-1">
                             <Calendar className="h-4 w-4" />
-                            <span>{new Date(record.record_date).toLocaleDateString()}</span>
+                            <span className="font-bold">{new Date(record.record_date).toLocaleDateString()}</span>
                           </div>
                           {record.doctor_name && (
                             <div className="flex items-center space-x-1">
                               <User className="h-4 w-4" />
-                              <span>Dr. {record.doctor_name}</span>
+                              <span className="font-bold">Dr. {record.doctor_name}</span>
                             </div>
                           )}
                           {record.hospital_name && (
                             <div className="flex items-center space-x-1">
                               <Hospital className="h-4 w-4" />
-                              <span>{record.hospital_name}</span>
+                              <span className="font-bold">{record.hospital_name}</span>
                             </div>
                           )}
                         </div>
@@ -328,15 +342,15 @@ const HealthRecords: React.FC = () => {
                     </div>
 
                     <div className="flex items-center space-x-2">
-                      <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+                      <button className="p-2 text-gray-400 hover:text-indigo-400 transition-colors">
                         <Eye className="h-4 w-4" />
                       </button>
-                      <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+                      <button className="p-2 text-gray-400 hover:text-indigo-400 transition-colors">
                         <Edit3 className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => handleDeleteRecord(record.id)}
-                        className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+                        className="p-2 text-gray-400 hover:text-red-400 transition-colors"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -344,8 +358,8 @@ const HealthRecords: React.FC = () => {
                   </div>
 
                   {record.description && (
-                    <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                      <p className="text-sm text-gray-700">{record.description}</p>
+                    <div className="bg-gray-900/50 rounded-lg p-4 mb-4 border border-gray-500/30">
+                      <p className="text-sm text-gray-300">{record.description}</p>
                     </div>
                   )}
 
@@ -354,7 +368,7 @@ const HealthRecords: React.FC = () => {
                       {record.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs"
+                          className="px-2 py-1 bg-gray-700 text-gray-300 rounded text-xs font-bold tracking-wider border border-gray-500/30"
                         >
                           {tag}
                         </span>
@@ -367,20 +381,20 @@ const HealthRecords: React.FC = () => {
 
             {filteredRecords.length === 0 && (
               <div className="text-center py-12">
-                <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  No health records found
+                <FileText className="h-16 w-16 text-gray-600 mx-auto mb-4" />
+                <h3 className="text-lg font-black text-white mb-2 tracking-wider">
+                  NO BIO RECORDS FOUND
                 </h3>
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-400 mb-4 font-bold">
                   {searchQuery || filters.type || filters.doctor
-                    ? 'Try adjusting your search criteria.'
-                    : 'Start building your digital health history by adding your first record.'}
+                    ? 'Try adjusting your search parameters.'
+                    : 'Start building your neural health archive by adding your first record.'}
                 </p>
                 <button
                   onClick={() => setActiveView('add')}
-                  className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
+                  className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg hover:from-indigo-400 hover:to-purple-400 transition-all font-black tracking-wider shadow-lg shadow-indigo-500/25 transform hover:scale-105"
                 >
-                  Add Health Record
+                  ADD BIO RECORD
                 </button>
               </div>
             )}
@@ -391,29 +405,29 @@ const HealthRecords: React.FC = () => {
       {/* Add Record View */}
       {activeView === 'add' && (
         <div className="max-w-3xl mx-auto">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+          <div className="bg-gray-800 rounded-xl shadow-lg border border-indigo-500/30 p-6 sm:p-8">
             <div className="text-center mb-8">
-              <div className="bg-indigo-100 p-4 rounded-full w-16 h-16 mx-auto mb-4">
-                <FileText className="h-8 w-8 text-indigo-600" />
+              <div className="bg-indigo-500/20 p-4 rounded-full w-16 h-16 mx-auto mb-4 border border-indigo-500/30">
+                <FileText className="h-8 w-8 text-indigo-400" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                Add Health Record
+              <h2 className="text-2xl font-black text-white mb-2 tracking-wider">
+                ADD BIO RECORD
               </h2>
-              <p className="text-gray-600">
-                Keep track of your medical history and health events
+              <p className="text-indigo-300 font-bold">
+                Upload medical data to neural archive
               </p>
             </div>
 
             <form onSubmit={handleAddRecord} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Record Type *
+                  <label className="block text-sm font-black text-indigo-400 mb-2 tracking-wider">
+                    RECORD TYPE *
                   </label>
                   <select
                     value={recordForm.record_type}
                     onChange={(e) => setRecordForm(prev => ({ ...prev, record_type: e.target.value as any }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full px-3 py-2 bg-gray-900 border border-indigo-500/50 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white"
                   >
                     {recordTypes.map((type) => (
                       <option key={type.value} value={type.value}>
@@ -424,77 +438,77 @@ const HealthRecords: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Date *
+                  <label className="block text-sm font-black text-indigo-400 mb-2 tracking-wider">
+                    DATE *
                   </label>
                   <input
                     type="date"
                     value={recordForm.record_date}
                     onChange={(e) => setRecordForm(prev => ({ ...prev, record_date: e.target.value }))}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full px-3 py-2 bg-gray-900 border border-indigo-500/50 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Title *
+                <label className="block text-sm font-black text-indigo-400 mb-2 tracking-wider">
+                  TITLE *
                 </label>
                 <input
                   type="text"
                   value={recordForm.title}
                   onChange={(e) => setRecordForm(prev => ({ ...prev, title: e.target.value }))}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  placeholder="Brief title for this health record"
+                  className="w-full px-3 py-2 bg-gray-900 border border-indigo-500/50 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white placeholder-gray-400"
+                  placeholder="Brief title for this bio record"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Description
+                <label className="block text-sm font-black text-indigo-400 mb-2 tracking-wider">
+                  DESCRIPTION
                 </label>
                 <textarea
                   value={recordForm.description}
                   onChange={(e) => setRecordForm(prev => ({ ...prev, description: e.target.value }))}
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-3 py-2 bg-gray-900 border border-indigo-500/50 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white placeholder-gray-400 resize-none"
                   placeholder="Detailed description of symptoms, diagnosis, treatment, etc."
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Doctor Name
+                  <label className="block text-sm font-black text-indigo-400 mb-2 tracking-wider">
+                    SPECIALIST NAME
                   </label>
                   <input
                     type="text"
                     value={recordForm.doctor_name}
                     onChange={(e) => setRecordForm(prev => ({ ...prev, doctor_name: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                    placeholder="Dr. John Smith"
+                    className="w-full px-3 py-2 bg-gray-900 border border-indigo-500/50 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white placeholder-gray-400"
+                    placeholder="Dr. Neural Smith"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Hospital/Clinic Name
+                  <label className="block text-sm font-black text-indigo-400 mb-2 tracking-wider">
+                    MED CENTER NAME
                   </label>
                   <input
                     type="text"
                     value={recordForm.hospital_name}
                     onChange={(e) => setRecordForm(prev => ({ ...prev, hospital_name: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                    placeholder="City General Hospital"
+                    className="w-full px-3 py-2 bg-gray-900 border border-indigo-500/50 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white placeholder-gray-400"
+                    placeholder="Neural Medical Center"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tags
+                <label className="block text-sm font-black text-indigo-400 mb-2 tracking-wider">
+                  TAGS
                 </label>
                 <div className="flex flex-wrap gap-2 mb-3">
                   {commonTags.map((tag) => (
@@ -514,10 +528,10 @@ const HealthRecords: React.FC = () => {
                           }));
                         }
                       }}
-                      className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                      className={`px-3 py-1 rounded-full text-xs font-black tracking-wider transition-all ${
                         recordForm.tags.includes(tag)
-                          ? 'bg-indigo-100 text-indigo-700'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          ? 'bg-indigo-500/30 text-indigo-300 border border-indigo-500/50'
+                          : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-500/30'
                       }`}
                     >
                       {tag}
@@ -532,28 +546,28 @@ const HealthRecords: React.FC = () => {
                   id="is_private"
                   checked={recordForm.is_private}
                   onChange={(e) => setRecordForm(prev => ({ ...prev, is_private: e.target.checked }))}
-                  className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  className="rounded border-gray-600 text-indigo-500 focus:ring-indigo-500 bg-gray-900"
                 />
-                <label htmlFor="is_private" className="text-sm text-gray-700">
-                  Keep this record private (only visible to you)
+                <label htmlFor="is_private" className="text-sm text-gray-300 font-bold">
+                  Keep this record private (neural encryption enabled)
                 </label>
               </div>
 
-              <div className="bg-blue-50 rounded-lg p-4">
-                <h4 className="font-medium text-blue-900 mb-2">
-                  Document Upload (Coming Soon)
+              <div className="bg-blue-900/30 rounded-lg p-4 border border-blue-500/30">
+                <h4 className="font-black text-blue-400 mb-2 tracking-wider">
+                  DOCUMENT UPLOAD (COMING SOON)
                 </h4>
-                <p className="text-sm text-blue-800">
+                <p className="text-sm text-blue-300">
                   Soon you'll be able to upload medical reports, prescriptions, and lab results 
-                  to attach to your health records for complete documentation.
+                  to attach to your bio records for complete neural documentation.
                 </p>
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3 bg-indigo-500 text-white rounded-lg font-medium hover:bg-indigo-600 transition-colors"
+                className="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg font-black tracking-wider hover:from-indigo-400 hover:to-purple-400 transition-all shadow-lg shadow-indigo-500/25 transform hover:scale-105"
               >
-                Add Health Record
+                UPLOAD BIO RECORD
               </button>
             </form>
           </div>

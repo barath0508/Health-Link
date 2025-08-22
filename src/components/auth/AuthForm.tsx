@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, Eye, EyeOff, Loader, Pill, FileText } from 'lucide-react';
+import { Heart, Eye, EyeOff, Loader, Pill, FileText, Zap } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const AuthForm: React.FC = () => {
@@ -35,7 +35,7 @@ const AuthForm: React.FC = () => {
         if (error) {
           setError(error.message);
         } else {
-          setSuccess('Account created successfully! Please sign in.');
+          setSuccess('Neural profile created! Access granted.');
           setIsSignUp(false);
           setFormData({ ...formData, password: '' });
         }
@@ -46,7 +46,7 @@ const AuthForm: React.FC = () => {
         }
       }
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
+      setError('System error detected. Retry connection.');
     } finally {
       setLoading(false);
     }
@@ -60,43 +60,55 @@ const AuthForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-teal-50 flex items-center justify-center px-4">
-      <div className="max-w-md w-full">
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Cyberpunk Grid Background */}
+      <div 
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px'
+        }}
+      />
+      
+      <div className="max-w-md w-full relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="bg-gradient-to-r from-blue-500 to-teal-500 p-3 rounded-xl">
-              <Heart className="h-10 w-10 text-white" />
+          <div className="flex items-center justify-center space-x-3 mb-6">
+            <div className="bg-gradient-to-r from-cyan-500 to-purple-500 p-4 rounded-xl shadow-lg shadow-cyan-500/25 animate-pulse">
+              <Heart className="h-12 w-12 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
-                HealthLink
+              <h1 className="text-4xl font-black bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent tracking-wider">
+                HEALTH-LINK
               </h1>
-              <p className="text-sm text-gray-500">Digital Health Platform</p>
+              <p className="text-sm text-cyan-400 font-bold tracking-widest">NEURAL HEALTH NETWORK</p>
             </div>
           </div>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-            {isSignUp ? 'Create Account' : 'Welcome Back'}
+          <h2 className="text-2xl font-black text-white mb-2 tracking-wider">
+            {isSignUp ? 'INITIALIZE PROFILE' : 'ACCESS GRANTED'}
           </h2>
-          <p className="text-gray-600">
+          <p className="text-cyan-300">
             {isSignUp 
-              ? 'Join our healthcare community today'
-              : 'Sign in to access your health dashboard'
+              ? 'Join the digital health matrix'
+              : 'Connect to your neural dashboard'
             }
           </p>
         </div>
 
         {/* Form */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+        <div className="bg-gray-800 rounded-2xl shadow-2xl p-8 border border-cyan-500/30 backdrop-blur-sm">
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-              <p className="text-red-800 text-sm">{error}</p>
+            <div className="bg-red-900/50 border border-red-500 rounded-lg p-4 mb-6 backdrop-blur-sm">
+              <p className="text-red-300 text-sm font-bold">{error}</p>
             </div>
           )}
 
           {success && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-              <p className="text-green-800 text-sm">{success}</p>
+            <div className="bg-green-900/50 border border-green-500 rounded-lg p-4 mb-6 backdrop-blur-sm">
+              <p className="text-green-300 text-sm font-bold">{success}</p>
             </div>
           )}
 
@@ -104,8 +116,8 @@ const AuthForm: React.FC = () => {
             {isSignUp && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name
+                  <label className="block text-sm font-black text-cyan-400 mb-2 tracking-wider">
+                    NEURAL ID
                   </label>
                   <input
                     type="text"
@@ -113,47 +125,47 @@ const AuthForm: React.FC = () => {
                     value={formData.full_name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                    placeholder="Enter your full name"
+                    className="w-full px-4 py-3 bg-gray-900 border border-cyan-500/50 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all text-white placeholder-gray-400"
+                    placeholder="Enter neural identifier"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone Number
+                  <label className="block text-sm font-black text-cyan-400 mb-2 tracking-wider">
+                    COMM LINK
                   </label>
                   <input
                     type="tel"
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                    placeholder="Enter your phone number"
+                    className="w-full px-4 py-3 bg-gray-900 border border-cyan-500/50 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all text-white placeholder-gray-400"
+                    placeholder="Neural communication code"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Role
+                  <label className="block text-sm font-black text-cyan-400 mb-2 tracking-wider">
+                    ACCESS LEVEL
                   </label>
                   <select
                     name="role"
                     value={formData.role}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                    className="w-full px-4 py-3 bg-gray-900 border border-cyan-500/50 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all text-white"
                   >
-                    <option value="patient">Patient</option>
-                    <option value="donor">Blood Donor</option>
-                    <option value="doctor">Doctor</option>
-                    <option value="hospital">Hospital</option>
+                    <option value="patient">Patient - Standard Access</option>
+                    <option value="donor">Donor - Blood Network</option>
+                    <option value="doctor">Doctor - Medical Expert</option>
+                    <option value="hospital">Hospital - Med Center</option>
                   </select>
                 </div>
               </>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
+              <label className="block text-sm font-black text-cyan-400 mb-2 tracking-wider">
+                NEURAL ADDRESS
               </label>
               <input
                 type="email"
@@ -161,14 +173,14 @@ const AuthForm: React.FC = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                placeholder="Enter your email"
+                className="w-full px-4 py-3 bg-gray-900 border border-cyan-500/50 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all text-white placeholder-gray-400"
+                placeholder="neural@healthlink.net"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Password
+              <label className="block text-sm font-black text-cyan-400 mb-2 tracking-wider">
+                ACCESS CODE
               </label>
               <div className="relative">
                 <input
@@ -177,13 +189,13 @@ const AuthForm: React.FC = () => {
                   value={formData.password}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                  placeholder="Enter your password"
+                  className="w-full px-4 py-3 pr-12 bg-gray-900 border border-cyan-500/50 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all text-white placeholder-gray-400"
+                  placeholder="Enter security protocol"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-cyan-400 hover:text-cyan-300 transition-colors"
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" />
@@ -197,22 +209,22 @@ const AuthForm: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-cyan-500 to-purple-500 text-white py-3 px-4 rounded-lg font-black tracking-wider hover:from-cyan-400 hover:to-purple-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-cyan-500/25 transform hover:scale-105"
             >
               {loading ? (
                 <div className="flex items-center justify-center space-x-2">
                   <Loader className="h-5 w-5 animate-spin" />
-                  <span>{isSignUp ? 'Creating Account...' : 'Signing In...'}</span>
+                  <span>{isSignUp ? 'INITIALIZING...' : 'CONNECTING...'}</span>
                 </div>
               ) : (
-                <span>{isSignUp ? 'Create Account' : 'Sign In'}</span>
+                <span>{isSignUp ? 'INITIALIZE NEURAL PROFILE' : 'ACCESS NETWORK'}</span>
               )}
             </button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-gray-600">
-              {isSignUp ? 'Already have an account?' : "Don't have an account?"}
+            <p className="text-gray-400">
+              {isSignUp ? 'Already in the network?' : "Need network access?"}
               <button
                 type="button"
                 onClick={() => {
@@ -221,9 +233,9 @@ const AuthForm: React.FC = () => {
                   setSuccess('');
                   setFormData({ ...formData, password: '' });
                 }}
-                className="ml-2 text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                className="ml-2 text-cyan-400 hover:text-cyan-300 font-bold transition-colors tracking-wider"
               >
-                {isSignUp ? 'Sign In' : 'Sign Up'}
+                {isSignUp ? 'CONNECT' : 'INITIALIZE'}
               </button>
             </p>
           </div>
@@ -231,19 +243,19 @@ const AuthForm: React.FC = () => {
 
         {/* Features */}
         <div className="mt-8 text-center">
-          <p className="text-sm text-gray-500 mb-4">Trusted by healthcare communities</p>
-          <div className="flex justify-center space-x-8 text-xs text-gray-400">
-            <div className="flex items-center space-x-1">
-              <Heart className="h-4 w-4 text-red-500" />
-              <span>Blood Donation</span>
+          <p className="text-sm text-gray-500 mb-4 font-bold tracking-wider">TRUSTED BY NEURAL NETWORKS</p>
+          <div className="flex justify-center space-x-6 sm:space-x-8 text-xs text-gray-400">
+            <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-1">
+              <Heart className="h-4 w-4 text-red-400" />
+              <span className="font-bold tracking-wider">BLOOD NET</span>
             </div>
-            <div className="flex items-center space-x-1">
-              <Pill className="h-4 w-4 text-purple-500" />
-              <span>Medicine Tracking</span>
+            <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-1">
+              <Pill className="h-4 w-4 text-purple-400" />
+              <span className="font-bold tracking-wider">PHARMA CORE</span>
             </div>
-            <div className="flex items-center space-x-1">
-              <FileText className="h-4 w-4 text-blue-500" />
-              <span>Health Records</span>
+            <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-1">
+              <FileText className="h-4 w-4 text-cyan-400" />
+              <span className="font-bold tracking-wider">BIO RECORDS</span>
             </div>
           </div>
         </div>
