@@ -60,5 +60,11 @@ INSERT INTO emergency_contacts (name, category, phone_number, city, state, is_24
 ('Fire Emergency', 'fire', '101', 'All Cities', 'All States', true, ARRAY['Fire', 'Rescue']),
 ('Ambulance Service', 'ambulance', '108', 'All Cities', 'All States', true, ARRAY['Medical Emergency', 'Ambulance']),
 ('Women Helpline', 'other', '1091', 'All Cities', 'All States', true, ARRAY['Women Safety', 'Distress']),
-('Child Helpline', 'other', '1098', 'All Cities', 'All States', true, ARRAY['Child Safety', 'Emergency'])
+('Child Helpline', 'other', '1098', 'All Cities', 'All States', true, ARRAY['Child Safety', 'Emergency']),
+
+-- Medical Shops for Emergency Medicine
+('Apollo Pharmacy 24x7', 'other', '1860-500-0101', 'Multiple Locations', 'All Cities', 'All States', true, ARRAY['Medicine Delivery', '24x7 Pharmacy', 'Emergency Medicine']),
+('MedPlus Pharmacy', 'other', '040-4444-5555', 'Multiple Locations', 'All Cities', 'All States', true, ARRAY['Medicine Delivery', 'Health Products']),
+('Netmeds Online Pharmacy', 'other', '1800-123-1010', 'Online Service', 'All Cities', 'All States', true, ARRAY['Online Medicine', 'Home Delivery', 'Emergency Orders']),
+('PharmEasy', 'other', '1800-102-0101', 'Online Service', 'All Cities', 'All States', true, ARRAY['Medicine Delivery', 'Lab Tests', '24x7 Support'])
 ON CONFLICT DO NOTHING;

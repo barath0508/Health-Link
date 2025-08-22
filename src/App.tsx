@@ -10,6 +10,7 @@ import HealthRecords from './components/health/HealthRecords';
 import Doctors from './components/doctors/Doctors';
 import AIAssistant from './components/ai/AIAssistant';
 import Emergency from './components/emergency/Emergency';
+import Campaigns from './components/campaigns/Campaigns';
 
 const AppContent: React.FC = () => {
   const { user, loading } = useAuth();
@@ -45,6 +46,8 @@ const AppContent: React.FC = () => {
         return <AIAssistant />;
       case 'emergency':
         return <Emergency />;
+      case 'campaigns':
+        return <Campaigns />;
       default:
         return <BloodDonation />;
     }

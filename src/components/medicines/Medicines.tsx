@@ -9,16 +9,23 @@ import {
   XCircle, 
   Edit3, 
   Trash2,
-  AlertTriangle
+  AlertTriangle,
+  ShoppingCart,
+  Truck,
+  MapPin,
+  Star,
+  RefreshCw
 } from 'lucide-react';
 import { supabase, MedicineReminder } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Medicines: React.FC = () => {
   const { profile } = useAuth();
-  const [activeView, setActiveView] = useState<'reminders' | 'add'>('reminders');
+  const [activeView, setActiveView] = useState<'reminders' | 'add' | 'pharmacy' | 'refills'>('reminders');
   const [reminders, setReminders] = useState<MedicineReminder[]>([]);
   const [todaysSchedule, setTodaysSchedule] = useState<any[]>([]);
+  const [pharmacies, setPharmacies] = useState<any[]>([]);
+  const [refillSuggestions, setRefillSuggestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingReminder, setEditingReminder] = useState<string | null>(null);
 
@@ -36,6 +43,8 @@ const Medicines: React.FC = () => {
     if (profile) {
       fetchReminders();
       fetchTodaysSchedule();
+      fetchPharmacies();
+      fetchRefillSuggestions();
     }
   }, [profile]);
 
@@ -56,6 +65,41 @@ const Medicines: React.FC = () => {
       console.error('Error fetching reminders:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchPharmacies = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('pharmacies')
+        .select('*')
+        .eq('is_verified', true)
+        .eq('home_delivery', true)
+        .order('rating', { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+      setPharmacies(data || []);
+    } catch (error) {
+      console.error('Error fetching pharmacies:', error);
+    }
+  };
+
+  const fetchRefillSuggestions = async () => {
+    if (!profile) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('refill_suggestions')
+        .select('*, medicine_reminders(*)')
+        .eq('user_id', profile.id)
+        .eq('status', 'pending')
+        .order('days_remaining', { ascending: true });
+
+      if (error) throw error;
+      setRefillSuggestions(data || []);
+    } catch (error) {
+      console.error('Error fetching refill suggestions:', error);
     }
   };
 
@@ -229,10 +273,10 @@ const Medicines: React.FC = () => {
       </div>
 
       {/* Navigation */}
-      <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+      <div className="flex space-x-1 bg-gray-100 rounded-lg p-1 overflow-x-auto">
         <button
           onClick={() => setActiveView('reminders')}
-          className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+          className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
             activeView === 'reminders'
               ? 'bg-white text-purple-600 shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
@@ -241,8 +285,33 @@ const Medicines: React.FC = () => {
           My Reminders
         </button>
         <button
+          onClick={() => setActiveView('refills')}
+          className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
+            activeView === 'refills'
+              ? 'bg-white text-purple-600 shadow-sm'
+              : 'text-gray-600 hover:text-gray-900'
+          }`}
+        >
+          Refill Alerts
+          {refillSuggestions.length > 0 && (
+            <span className="ml-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
+              {refillSuggestions.length}
+            </span>
+          )}
+        </button>
+        <button
+          onClick={() => setActiveView('pharmacy')}
+          className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
+            activeView === 'pharmacy'
+              ? 'bg-white text-purple-600 shadow-sm'
+              : 'text-gray-600 hover:text-gray-900'
+          }`}
+        >
+          Order Medicine
+        </button>
+        <button
           onClick={() => setActiveView('add')}
-          className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+          className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
             activeView === 'add'
               ? 'bg-white text-purple-600 shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
@@ -436,6 +505,180 @@ const Medicines: React.FC = () => {
         </div>
       )}
 
+      {/* Refill Suggestions View */}
+      {activeView === 'refills' && (
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-gray-900">Medicine Refill Alerts</h2>
+            <button
+              onClick={fetchRefillSuggestions}
+              className="flex items-center space-x-2 px-3 py-2 text-purple-600 border border-purple-200 rounded-lg hover:bg-purple-50 transition-colors"
+            >
+              <RefreshCw className="h-4 w-4" />
+              <span>Refresh</span>
+            </button>
+          </div>
+
+          {refillSuggestions.length > 0 ? (
+            <div className="grid gap-4">
+              {refillSuggestions.map((suggestion) => (
+                <div key={suggestion.id} className="bg-white rounded-xl shadow-sm border border-orange-200 p-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="bg-orange-100 p-3 rounded-xl">
+                        <AlertTriangle className="h-6 w-6 text-orange-600" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          {suggestion.medicine_name}
+                        </h3>
+                        <p className="text-orange-600 font-medium">
+                          {suggestion.days_remaining} days remaining
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => setActiveView('pharmacy')}
+                        className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors flex items-center space-x-2"
+                      >
+                        <ShoppingCart className="h-4 w-4" />
+                        <span>Order Now</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          // Dismiss suggestion
+                          supabase.from('refill_suggestions')
+                            .update({ status: 'dismissed' })
+                            .eq('id', suggestion.id)
+                            .then(() => fetchRefillSuggestions());
+                        }}
+                        className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        Dismiss
+                      </button>
+                    </div>
+                  </div>
+                  <div className="bg-orange-50 rounded-lg p-4">
+                    <p className="text-sm text-orange-800">
+                      <strong>Suggested quantity:</strong> {suggestion.suggested_quantity} units
+                    </p>
+                    <p className="text-sm text-orange-700 mt-1">
+                      Based on your current usage pattern, you'll need a refill soon.
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <CheckCircle className="h-16 w-16 text-green-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                All medicines are well stocked
+              </h3>
+              <p className="text-gray-600">
+                We'll notify you when any of your medicines are running low.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Pharmacy View */}
+      {activeView === 'pharmacy' && (
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-gray-900">Partner Pharmacies</h2>
+            <div className="text-sm text-gray-500">
+              Home delivery available
+            </div>
+          </div>
+
+          <div className="grid gap-6">
+            {pharmacies.map((pharmacy) => (
+              <div key={pharmacy.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="bg-blue-100 p-3 rounded-xl">
+                      <ShoppingCart className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {pharmacy.name}
+                      </h3>
+                      <div className="flex items-center space-x-2 mt-1">
+                        <MapPin className="h-4 w-4 text-gray-400" />
+                        <span className="text-sm text-gray-600">{pharmacy.city}</span>
+                        {pharmacy.is_24x7 && (
+                          <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                            24x7
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                    <span className="text-sm font-medium">{pharmacy.rating}</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                  <div className="flex items-center space-x-2">
+                    <Truck className="h-4 w-4 text-gray-400" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Delivery</p>
+                      <p className="text-xs text-gray-600">₹{pharmacy.delivery_fee} (Free above ₹{pharmacy.free_delivery_above})</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <MapPin className="h-4 w-4 text-gray-400" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Radius</p>
+                      <p className="text-xs text-gray-600">{pharmacy.delivery_radius_km} km</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <ShoppingCart className="h-4 w-4 text-gray-400" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Min Order</p>
+                      <p className="text-xs text-gray-600">₹{pharmacy.min_order_amount}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2 text-sm text-gray-600">
+                    <span>📞 {pharmacy.phone}</span>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button className="px-4 py-2 text-purple-600 border border-purple-200 rounded-lg hover:bg-purple-50 transition-colors">
+                      Call Now
+                    </button>
+                    <button className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors flex items-center space-x-2">
+                      <ShoppingCart className="h-4 w-4" />
+                      <span>Order Medicine</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {pharmacies.length === 0 && (
+            <div className="text-center py-12">
+              <ShoppingCart className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No pharmacies available
+              </h3>
+              <p className="text-gray-600">
+                We're working to partner with pharmacies in your area.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Add Medicine View */}
       {activeView === 'add' && (
         <div className="max-w-2xl mx-auto">
@@ -566,13 +809,13 @@ const Medicines: React.FC = () => {
 
               <div className="bg-blue-50 rounded-lg p-4">
                 <h4 className="font-medium text-blue-900 mb-2">
-                  Reminder Features
+                  Smart Features
                 </h4>
                 <ul className="text-sm text-blue-800 space-y-1">
                   <li>• Browser notifications at scheduled times</li>
-                  <li>• Email reminders as backup</li>
+                  <li>• Automatic refill suggestions when running low</li>
+                  <li>• Partner pharmacy integration for easy ordering</li>
                   <li>• Adherence tracking and reports</li>
-                  <li>• Missed dose alerts</li>
                 </ul>
               </div>
 

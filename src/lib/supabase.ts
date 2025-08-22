@@ -3,34 +3,9 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-const createMockClient = () => ({
-  auth: {
-    signUp: () => Promise.resolve({ data: null, error: new Error('Please set up your Supabase database first. See setup-database.sql file.') }),
-    signInWithPassword: () => Promise.resolve({ data: null, error: new Error('Please set up your Supabase database first. See setup-database.sql file.') }),
-    signOut: () => Promise.resolve({ error: null }),
-    getSession: () => Promise.resolve({ data: { session: null }, error: null }),
-    onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
-  },
-  from: () => ({
-    select: () => ({
-      eq: () => ({
-        order: () => Promise.resolve({ data: [], error: null }),
-        single: () => Promise.resolve({ data: null, error: null })
-      })
-    }),
-    insert: () => Promise.resolve({ data: null, error: new Error('Please set up your Supabase database first.') }),
-    update: () => Promise.resolve({ data: null, error: new Error('Please set up your Supabase database first.') }),
-    delete: () => Promise.resolve({ data: null, error: new Error('Please set up your Supabase database first.') })
-  }),
-  rpc: () => Promise.resolve({ data: null, error: new Error('Please set up your Supabase database first.') })
-});
 
-export const supabase = (!supabaseUrl || !supabaseAnonKey || supabaseUrl === 'your_supabase_project_url' || supabaseAnonKey === 'your_supabase_anon_key')
-  ? (() => {
-      console.warn('Supabase not configured. Using mock client for development.');
-      return createMockClient();
-    })()
-  : createClient(supabaseUrl, supabaseAnonKey);
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export type Profile = {
   id: string;
