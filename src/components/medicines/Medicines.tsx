@@ -652,10 +652,18 @@ const Medicines: React.FC = () => {
                     <span>📞 {pharmacy.phone}</span>
                   </div>
                   <div className="flex space-x-2">
-                    <button className="px-4 py-2 text-purple-600 border border-purple-200 rounded-lg hover:bg-purple-50 transition-colors">
+                    <button 
+                      onClick={() => window.open(`tel:${pharmacy.phone}`, '_self')}
+                      className="px-4 py-2 text-purple-600 border border-purple-200 rounded-lg hover:bg-purple-50 transition-colors"
+                    >
                       Call Now
                     </button>
-                    <button className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors flex items-center space-x-2">
+                    <button 
+                      onClick={() => {
+                        alert(`Redirecting to ${pharmacy.name} ordering system...\n\nIn a real app, this would:\n• Open pharmacy's ordering portal\n• Pre-fill user details\n• Allow medicine selection\n• Process payment & delivery`);
+                      }}
+                      className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors flex items-center space-x-2"
+                    >
                       <ShoppingCart className="h-4 w-4" />
                       <span>Order Medicine</span>
                     </button>

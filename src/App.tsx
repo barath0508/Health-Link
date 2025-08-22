@@ -11,6 +11,7 @@ import Doctors from './components/doctors/Doctors';
 import AIAssistant from './components/ai/AIAssistant';
 import Emergency from './components/emergency/Emergency';
 import Campaigns from './components/campaigns/Campaigns';
+import NutritionChecker from './components/nutrition/NutritionChecker';
 
 const AppContent: React.FC = () => {
   const { user, loading } = useAuth();
@@ -48,6 +49,8 @@ const AppContent: React.FC = () => {
         return <Emergency />;
       case 'campaigns':
         return <Campaigns />;
+      case 'nutrition':
+        return <NutritionChecker />;
       default:
         return <BloodDonation />;
     }
