@@ -15,7 +15,8 @@ import {
   Brain,
   Calendar,
   Apple,
-  Home
+  Home,
+  CreditCard
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -40,6 +41,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange }) => 
     { id: 'doctors', label: 'Find Doctors', icon: UserCheck, color: 'text-teal-500' },
     { id: 'campaigns', label: 'Campaigns', icon: Calendar, color: 'text-orange-500' },
     { id: 'nutrition', label: 'Nutrition Check', icon: Apple, color: 'text-green-500' },
+    { id: 'healthcard', label: 'Health Card', icon: CreditCard, color: 'text-purple-500' },
     { id: 'ai', label: 'AI Assistant', icon: Brain, color: 'text-purple-600' },
     { id: 'emergency', label: 'Emergency', icon: Phone, color: 'text-red-600' },
   ];

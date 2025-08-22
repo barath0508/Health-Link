@@ -13,6 +13,7 @@ import Emergency from './components/emergency/Emergency';
 import Campaigns from './components/campaigns/Campaigns';
 import NutritionChecker from './components/nutrition/NutritionChecker';
 import Home from './components/home/Home';
+import HealthCard from './components/healthcard/HealthCard';
 
 const AppContent: React.FC = () => {
   const { user, loading } = useAuth();
@@ -54,6 +55,8 @@ const AppContent: React.FC = () => {
         return <Campaigns />;
       case 'nutrition':
         return <NutritionChecker />;
+      case 'healthcard':
+        return <HealthCard />;
       default:
         return <Home />;
     }
