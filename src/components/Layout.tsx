@@ -33,18 +33,18 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange }) => 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { id: 'home', label: 'Neural Hub', icon: Home, color: 'from-cyan-400 to-blue-500' },
-    { id: 'blood', label: 'Blood Net', icon: Heart, color: 'from-red-400 to-pink-500' },
-    { id: 'hospitals', label: 'Med Centers', icon: Building2, color: 'from-blue-400 to-indigo-500' },
-    { id: 'assistance', label: 'Support Grid', icon: HandHeart, color: 'from-green-400 to-emerald-500' },
-    { id: 'medicines', label: 'Pharma Core', icon: Pill, color: 'from-purple-400 to-violet-500' },
-    { id: 'health', label: 'Data Vault', icon: FileText, color: 'from-indigo-400 to-purple-500' },
-    { id: 'doctors', label: 'Expert Net', icon: UserCheck, color: 'from-teal-400 to-cyan-500' },
-    { id: 'campaigns', label: 'Health Ops', icon: Calendar, color: 'from-orange-400 to-red-500' },
-    { id: 'nutrition', label: 'Nutri AI', icon: Apple, color: 'from-lime-400 to-green-500' },
-    { id: 'healthcard', label: 'Bio ID', icon: CreditCard, color: 'from-gray-400 to-slate-500' },
-    { id: 'ai', label: 'Neural AI', icon: Brain, color: 'from-purple-500 to-pink-500' },
-    { id: 'emergency', label: 'Crisis Mode', icon: Phone, color: 'from-red-500 to-orange-500' },
+    { id: 'home', label: 'Home', icon: Home, color: 'from-cyan-400 to-blue-500' },
+    { id: 'blood', label: 'Blood Donation', icon: Heart, color: 'from-red-400 to-pink-500' },
+    { id: 'hospitals', label: 'Hospitals', icon: Building2, color: 'from-blue-400 to-indigo-500' },
+    { id: 'assistance', label: 'Assistance', icon: HandHeart, color: 'from-green-400 to-emerald-500' },
+    { id: 'medicines', label: 'Medicines', icon: Pill, color: 'from-purple-400 to-violet-500' },
+    { id: 'health', label: 'Health Records', icon: FileText, color: 'from-indigo-400 to-purple-500' },
+    { id: 'doctors', label: 'Doctors', icon: UserCheck, color: 'from-teal-400 to-cyan-500' },
+    { id: 'campaigns', label: 'Campaigns', icon: Calendar, color: 'from-orange-400 to-red-500' },
+    { id: 'nutrition', label: 'Nutrition', icon: Apple, color: 'from-lime-400 to-green-500' },
+    { id: 'healthcard', label: 'Health Card', icon: CreditCard, color: 'from-gray-400 to-slate-500' },
+    { id: 'ai', label: 'AI Assistant', icon: Brain, color: 'from-purple-500 to-pink-500' },
+    { id: 'emergency', label: 'Emergency', icon: Phone, color: 'from-red-500 to-orange-500' },
   ];
 
   const handleSignOut = () => {

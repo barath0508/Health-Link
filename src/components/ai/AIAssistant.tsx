@@ -34,7 +34,7 @@ const AIAssistant: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Neural connection established! I\'m your AI Health Assistant. I can analyze symptoms, provide health recommendations, medication protocols, and answer your health queries. How can I assist your neural network today?',
+      text: 'Hello! I\'m your AI Health Assistant. I can analyze symptoms, provide health recommendations, medication guidance, and answer your health questions. How can I help you today?',
       sender: 'ai',
       timestamp: new Date()
     }
@@ -55,13 +55,13 @@ const AIAssistant: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const features = [
-    { id: 'chat', label: 'Neural Chat', icon: MessageCircle },
-    { id: 'symptoms', label: 'Symptom Scan', icon: Stethoscope },
-    { id: 'health', label: 'Health Matrix', icon: Target },
-    { id: 'medication', label: 'Med Analysis', icon: Pill },
-    { id: 'prescription', label: 'Script OCR', icon: FileText },
-    { id: 'emergency', label: 'Crisis AI', icon: Shield },
-    { id: 'wellness', label: 'Wellness Core', icon: Heart },
+    { id: 'chat', label: 'Health Chat', icon: MessageCircle },
+    { id: 'symptoms', label: 'Symptom Checker', icon: Stethoscope },
+    { id: 'health', label: 'Health Planner', icon: Target },
+    { id: 'medication', label: 'Medication Analysis', icon: Pill },
+    { id: 'prescription', label: 'Prescription Reader', icon: FileText },
+    { id: 'emergency', label: 'Emergency Guide', icon: Shield },
+    { id: 'wellness', label: 'Wellness Tips', icon: Heart },
   ];
 
   const handleSendMessage = async () => {
@@ -90,7 +90,7 @@ const AIAssistant: React.FC = () => {
     } catch (error) {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: 'Neural connection disrupted. Please retry or consult with a healthcare specialist.',
+        text: 'Sorry, I\'m having trouble processing your request. Please try again or consult with a healthcare professional.',
         sender: 'ai',
         timestamp: new Date()
       };
@@ -209,7 +209,7 @@ const AIAssistant: React.FC = () => {
               <div className="p-3 rounded-lg bg-gray-700 text-gray-200 border border-purple-500/30">
                 <div className="flex items-center space-x-2">
                   <Loader className="h-4 w-4 animate-spin text-purple-400" />
-                  <span className="text-sm">Neural processing...</span>
+                  <span className="text-sm">Processing...</span>
                 </div>
               </div>
             </div>
@@ -224,7 +224,7 @@ const AIAssistant: React.FC = () => {
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSendMessage()}
             disabled={isLoading}
-            placeholder="Ask about your health neural network..."
+            placeholder="Ask about your health..."
             className="flex-1 px-3 py-2 bg-gray-900 border border-purple-500/50 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-gray-400"
           />
           <button
@@ -242,7 +242,7 @@ const AIAssistant: React.FC = () => {
   const renderSymptomChecker = () => (
     <div className="space-y-6">
       <div className="bg-gray-800 rounded-xl shadow-lg border border-green-500/30 p-6">
-        <h3 className="text-lg font-black text-green-400 mb-4 tracking-wider">DESCRIBE SYMPTOMS</h3>
+        <h3 className="text-lg font-black text-green-400 mb-4 tracking-wider">DESCRIBE SYMPTOMSTOMS</h3>
         <textarea
           value={symptoms}
           onChange={(e) => setSymptoms(e.target.value)}

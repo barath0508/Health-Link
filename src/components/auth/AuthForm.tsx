@@ -35,7 +35,7 @@ const AuthForm: React.FC = () => {
         if (error) {
           setError(error.message);
         } else {
-          setSuccess('Neural profile created! Access granted.');
+          setSuccess('Account created successfully! Please sign in.');
           setIsSignUp(false);
           setFormData({ ...formData, password: '' });
         }
@@ -46,7 +46,7 @@ const AuthForm: React.FC = () => {
         }
       }
     } catch (err) {
-      setError('System error detected. Retry connection.');
+      setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -84,16 +84,16 @@ const AuthForm: React.FC = () => {
               <h1 className="text-4xl font-black bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent tracking-wider">
                 HEALTH-LINK
               </h1>
-              <p className="text-sm text-cyan-400 font-bold tracking-widest">NEURAL HEALTH NETWORK</p>
+              <p className="text-sm text-cyan-400 font-bold tracking-widest">DIGITAL HEALTH PLATFORM</p>
             </div>
           </div>
           <h2 className="text-2xl font-black text-white mb-2 tracking-wider">
-            {isSignUp ? 'INITIALIZE PROFILE' : 'ACCESS GRANTED'}
+            {isSignUp ? 'CREATE ACCOUNT' : 'SIGN IN'}
           </h2>
           <p className="text-cyan-300">
             {isSignUp 
-              ? 'Join the digital health matrix'
-              : 'Connect to your neural dashboard'
+              ? 'Join the digital health platform'
+              : 'Access your health dashboard'
             }
           </p>
         </div>
@@ -117,7 +117,7 @@ const AuthForm: React.FC = () => {
               <>
                 <div>
                   <label className="block text-sm font-black text-cyan-400 mb-2 tracking-wider">
-                    NEURAL ID
+                    FULL NAME
                   </label>
                   <input
                     type="text"
@@ -126,13 +126,13 @@ const AuthForm: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     className="w-full px-4 py-3 bg-gray-900 border border-cyan-500/50 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all text-white placeholder-gray-400"
-                    placeholder="Enter neural identifier"
+                    placeholder="Enter your full name"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-black text-cyan-400 mb-2 tracking-wider">
-                    COMM LINK
+                    PHONE NUMBER
                   </label>
                   <input
                     type="tel"
@@ -140,13 +140,13 @@ const AuthForm: React.FC = () => {
                     value={formData.phone}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 bg-gray-900 border border-cyan-500/50 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all text-white placeholder-gray-400"
-                    placeholder="Neural communication code"
+                    placeholder="Enter your phone number"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-black text-cyan-400 mb-2 tracking-wider">
-                    ACCESS LEVEL
+                    ROLE
                   </label>
                   <select
                     name="role"
@@ -154,10 +154,10 @@ const AuthForm: React.FC = () => {
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 bg-gray-900 border border-cyan-500/50 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all text-white"
                   >
-                    <option value="patient">Patient - Standard Access</option>
-                    <option value="donor">Donor - Blood Network</option>
-                    <option value="doctor">Doctor - Medical Expert</option>
-                    <option value="hospital">Hospital - Med Center</option>
+                    <option value="patient">Patient</option>
+                    <option value="donor">Blood Donor</option>
+                    <option value="doctor">Doctor</option>
+                    <option value="hospital">Hospital</option>
                   </select>
                 </div>
               </>
@@ -165,7 +165,7 @@ const AuthForm: React.FC = () => {
 
             <div>
               <label className="block text-sm font-black text-cyan-400 mb-2 tracking-wider">
-                NEURAL ADDRESS
+                EMAIL ADDRESS
               </label>
               <input
                 type="email"
@@ -174,13 +174,13 @@ const AuthForm: React.FC = () => {
                 onChange={handleInputChange}
                 required
                 className="w-full px-4 py-3 bg-gray-900 border border-cyan-500/50 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all text-white placeholder-gray-400"
-                placeholder="neural@healthlink.net"
+                placeholder="your@email.com"
               />
             </div>
 
             <div>
               <label className="block text-sm font-black text-cyan-400 mb-2 tracking-wider">
-                ACCESS CODE
+                PASSWORD
               </label>
               <div className="relative">
                 <input
@@ -190,7 +190,7 @@ const AuthForm: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 pr-12 bg-gray-900 border border-cyan-500/50 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all text-white placeholder-gray-400"
-                  placeholder="Enter security protocol"
+                  placeholder="Enter your password"
                 />
                 <button
                   type="button"
@@ -214,17 +214,17 @@ const AuthForm: React.FC = () => {
               {loading ? (
                 <div className="flex items-center justify-center space-x-2">
                   <Loader className="h-5 w-5 animate-spin" />
-                  <span>{isSignUp ? 'INITIALIZING...' : 'CONNECTING...'}</span>
+                  <span>{isSignUp ? 'CREATING ACCOUNT...' : 'SIGNING IN...'}</span>
                 </div>
               ) : (
-                <span>{isSignUp ? 'INITIALIZE NEURAL PROFILE' : 'ACCESS NETWORK'}</span>
+                <span>{isSignUp ? 'CREATE ACCOUNT' : 'SIGN IN'}</span>
               )}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-gray-400">
-              {isSignUp ? 'Already in the network?' : "Need network access?"}
+              {isSignUp ? 'Already have an account?' : "Don't have an account?"}
               <button
                 type="button"
                 onClick={() => {
@@ -235,7 +235,7 @@ const AuthForm: React.FC = () => {
                 }}
                 className="ml-2 text-cyan-400 hover:text-cyan-300 font-bold transition-colors tracking-wider"
               >
-                {isSignUp ? 'CONNECT' : 'INITIALIZE'}
+                {isSignUp ? 'SIGN IN' : 'SIGN UP'}
               </button>
             </p>
           </div>
@@ -243,19 +243,19 @@ const AuthForm: React.FC = () => {
 
         {/* Features */}
         <div className="mt-8 text-center">
-          <p className="text-sm text-gray-500 mb-4 font-bold tracking-wider">TRUSTED BY NEURAL NETWORKS</p>
+          <p className="text-sm text-gray-500 mb-4 font-bold tracking-wider">TRUSTED HEALTHCARE PLATFORM</p>
           <div className="flex justify-center space-x-6 sm:space-x-8 text-xs text-gray-400">
             <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-1">
               <Heart className="h-4 w-4 text-red-400" />
-              <span className="font-bold tracking-wider">BLOOD NET</span>
+              <span className="font-bold tracking-wider">BLOOD DONATION</span>
             </div>
             <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-1">
               <Pill className="h-4 w-4 text-purple-400" />
-              <span className="font-bold tracking-wider">PHARMA CORE</span>
+              <span className="font-bold tracking-wider">MEDICINES</span>
             </div>
             <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-1">
               <FileText className="h-4 w-4 text-cyan-400" />
-              <span className="font-bold tracking-wider">BIO RECORDS</span>
+              <span className="font-bold tracking-wider">HEALTH RECORDS</span>
             </div>
           </div>
         </div>
